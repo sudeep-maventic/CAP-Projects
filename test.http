@@ -1,0 +1,12 @@
+GET http://localhost:4004/odata/v4/catalog/Products
+
+###
+POST http://localhost:4004/odata/v4/catalog/Products
+Content-Type: application/json
+
+{
+    "productName": "Laptop",
+    "category": "E",
+    "quantity": 5,
+    "price": 50000
+}
