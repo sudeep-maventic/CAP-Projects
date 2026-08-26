@@ -22,10 +22,10 @@ type Category: String enum{
 }
 
 entity Products{
-    key ID: UUID;
+    key ID: Integer;
 
     @mandatory
-    @assert.unique: { productName: [ productName ] }
+    @assert.unique: {productName: [productName]}
     productName: String;
 
     category: Category @assert.range;
@@ -33,7 +33,7 @@ entity Products{
     @assert.range: [1, 999]
     quantity: Integer;
 
-    @assert.range: [1, 999]
+    @assert.range: [1, 999999]
     price: Integer;
 
     @readonly
@@ -43,27 +43,16 @@ entity Products{
     orderItems: Association to many OrderItems on orderItems.product = $self;
 }
 
-entity OrderItems{
-    key ID: UUID;
-    order: Association to Orders @assert.target;
-    product: Association to Products @assert.target;
-
-    @assert.range: [1, 1000]
-    qty: Integer default 1;
-
-    unitPrice: Decimal(10, 2);
-}
-
 entity Customer{
-    key Cust_ID: UUID;
+    key Cust_ID: Integer;
 
     @mandatory
     cust_name: String(50) not null;
 
     phone: Integer64;
     
-    @assert.unique: { email: [ email ]}
     @assert.format : '^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$'
+    @assert.unique: {email: [email]}
     email: String not null;
 
     // 1 : 1
@@ -76,14 +65,14 @@ entity Customer{
 }
 
 entity CustomerProfile{
-    key ID: UUID;
-    customer: Association to one Customer @assert.target;
+    key ID: Integer;
+    customer: Association to one Customer;
     loyaltyPoints: Integer default 0;
     memberShip: String default 'Bronze';
 }
 
 entity Orders{
-    key ID: UUID;
+    key ID: Integer;
     customerId: Association to Customer @assert.target;
     order_status: Status @assert.range default 'P';
     total_amount: Decimal(10, 2);
@@ -91,4 +80,15 @@ entity Orders{
 
     // 1 : many Composition 
     items: Composition of many OrderItems on items.order = $self;
+}
+
+entity OrderItems{
+    key ID: Integer;
+    order: Association to Orders;
+    product: Association to Products;
+
+    @assert.range: [1, 1000]
+    qty: Integer default 1;
+
+    unitPrice: Decimal(10, 2);
 }

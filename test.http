@@ -1,12 +1,161 @@
+###
 GET http://localhost:4004/odata/v4/catalog/Products
 
+###
+GET http://localhost:4004/odata/v4/catalog/Products(1)
+
+# Creation of Product 
 ###
 POST http://localhost:4004/odata/v4/catalog/Products
 Content-Type: application/json
 
 {
+    "ID": 1,
     "productName": "Laptop",
     "category": "E",
     "quantity": 5,
     "price": 50000
 }
+
+
+# mandatory product Name 
+###
+POST http://localhost:4004/odata/v4/catalog/Products
+Content-Type: application/json
+
+{
+    "ID": 2,
+    "category": "E",
+    "quantity": 5,
+    "price": 50000
+}
+
+###
+GET http://localhost:4004/odata/v4/catalog/Products/1?$expand=orderItems
+
+###
+DELETE  http://localhost:4004/odata/v4/catalog/Products/1
+
+# Update the Product
+###
+PATCH http://localhost:4004/odata/v4/catalog/Products(1)
+Content-Type: application/json
+
+{
+    "quantity": 28
+}
+
+###
+GET http://localhost:4004/odata/v4/catalog/Customer?$expand=profile
+
+###
+GET http://localhost:4004/odata/v4/catalog/Customer?$expand=orders
+
+# Create Customer 
+###
+POST http://localhost:4004/odata/v4/catalog/Customer
+Content-Type: application/json
+
+{
+  "Cust_ID": 100,
+  "cust_name": "Jane Doe",
+  "phone": 9876543210,
+  "email": "jane.doe@example.com",
+  "address_city": "Bangalore",
+  "address_state": "Karnataka",
+  "address_postal_code": 560001,
+  "profile": {
+    "ID": 1000,
+    "loyaltyPoints": 0,
+    "memberShip": "Bronze"
+  }
+}
+
+###
+DELETE http://localhost:4004/odata/v4/catalog/Customer(107)
+
+###
+POST http://localhost:4004/odata/v4/catalog/Customer
+Content-Type: application/json
+
+{
+  "Cust_ID": 100,
+  "cust_name": "Jane Doe",
+  "phone": 9876543210,
+  "email": "email_not_found",
+  "address_city": "Bangalore",
+  "address_state": "Karnataka",
+  "address_postal_code": 560001
+}
+
+### Get the Profile created above directly
+GET http://localhost:4004/odata/v4/catalog/Profile(1000)
+
+### Update loyalty points
+PATCH http://localhost:4004/odata/v4/catalog/Profile(1000)
+Content-Type: application/json
+
+{
+  "loyaltyPoints": 250,
+  "memberShip": "Silver"
+}
+
+###
+POST http://localhost:4004/odata/v4/catalog/Profile
+Content-Type: application/json
+
+{
+  "ID": 1004,
+  "customer_Cust_ID": 100,
+  "loyaltyPoints": 50,
+  "memberShip": "Bronze"
+}
+
+###
+GET http://localhost:4004/odata/v4/catalog/Orders(502)?$expand=items($expand=product)
+
+###
+GET http://localhost:4004/odata/v4/catalog/Orders(502)?$expand=customerId,items
+
+### M:N
+POST http://localhost:4004/odata/v4/catalog/Orders
+Content-Type: application/json
+
+{
+  "ID": 502,
+  "customerId_Cust_ID": 100,
+  "order_status": "P",
+  "total_amount": 2298.00,
+  "payment_method": "Credit Card",
+  "items": [
+    {
+      "ID": 5002,
+      "product_ID": 1,
+      "qty": 1,
+      "unitPrice": 1499.00
+    },{
+        "ID": 5001,
+        "product_ID": 1,
+        "qty": 3,
+        "unitPrice": 1500.00
+    }
+  ]
+}
+
+###
+DELETE http://localhost:4004/odata/v4/catalog/Customer(101)
+
+###
+GET http://localhost:4004/odata/v4/catalog/Orders
+
+###
+DELETE http://localhost:4004/odata/v4/catalog/Orders(502)
+
+###
+DELETE http://localhost:4004/odata/v4/catalog/Customer(100)
+
+###
+GET http://localhost:4004/odata/v4/catalog/Customer
+
+###
+GET http://localhost:4004/odata/v4/catalog/OrderItems
