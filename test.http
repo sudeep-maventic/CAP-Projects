@@ -10,11 +10,11 @@ POST http://localhost:4004/odata/v4/catalog/Products
 Content-Type: application/json
 
 {
-    "ID": 1,
-    "productName": "Laptop",
-    "category": "E",
+    "ID": 10,
+    "productName": "Sports Cap",
+    "category": "S",
     "quantity": 5,
-    "price": 50000
+    "price": 399
 }
 
 
@@ -57,17 +57,17 @@ POST http://localhost:4004/odata/v4/catalog/Customer
 Content-Type: application/json
 
 {
-  "Cust_ID": 100,
-  "cust_name": "Jane Doe",
-  "phone": 9876543210,
-  "email": "jane.doe@example.com",
-  "address_city": "Bangalore",
-  "address_state": "Karnataka",
-  "address_postal_code": 560001,
+  "Cust_ID": 102,
+  "cust_name": "Priya Nair",
+  "phone": 9876500002,
+  "email": "priya.nair@example.com",
+  "address_city": "Chennai",
+  "address_state": "Tamil Nadu",
+  "address_postal_code": 600002,
   "profile": {
-    "ID": 1000,
-    "loyaltyPoints": 0,
-    "memberShip": "Bronze"
+    "ID": 1002,
+    "loyaltyPoints": 800,
+    "memberShip": "Gold"
   }
 }
 
@@ -152,10 +152,48 @@ GET http://localhost:4004/odata/v4/catalog/Orders
 DELETE http://localhost:4004/odata/v4/catalog/Orders(502)
 
 ###
+PATCH http://localhost:4004/odata/v4/catalog/Orders(501)
+Content-Type: application/json
+
+{
+  "payment_method": "UPI"
+}
+
+###
 DELETE http://localhost:4004/odata/v4/catalog/Customer(100)
 
 ###
 GET http://localhost:4004/odata/v4/catalog/Customer
 
 ###
-GET http://localhost:4004/odata/v4/catalog/OrderItems
+GET http://localhost:4004/odata/v4/catalog/OrderItems(5001)
+
+###
+PUT http://localhost:4004/odata/v4/catalog/OrderItems
+Content-Type: application/json
+
+{
+  "ID": 5006,
+  "order_ID": 504,
+  "product_ID": 6,
+  "qty": 5,
+  "unitPrice": 2999.00
+}
+
+###
+POST http://localhost:4004/odata/v4/catalog/Orders
+Content-Type: application/json
+
+{
+  "ID": 505,
+  "customerId_Cust_ID": 100,
+  "order_status": "S",
+  "payment_method": "Credit Card",
+  "total_amount": 14995.00
+}
+
+###
+GET http://localhost:4004/odata/v4/catalog/Orders?$expand=items
+
+###
+GET http://localhost:4004/odata/v4/catalog/Products?$select=ID,productName,price
